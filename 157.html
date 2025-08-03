@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      background: #fff7ed;
+      padding-top: 50px;
+    }
+
+    #quizBox {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      max-width: 400px;
+    }
+
+    button {
+      margin: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    #timer, #score {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="quizBox">
+    <h2 id="question"></h2>
+    <div id="options"></div>
+    <p id="timer">Time left: <span id="time">10</span>s</p>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    const allQuestions = [
+      { q: "What is the capital of France?", options: ["Paris", "London", "Rome"], answer: "Paris" },
+      { q: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter"], answer: "Mars" },
+      { q: "Who wrote the national anthem of India?", options: ["Bankim Chandra", "Rabindranath Tagore", "Gandhiji"], answer: "Rabindranath Tagore" },
+      { q: "Which is the longest river in the world?", options: ["Amazon", "Nile", "Ganges"], answer: "Nile" },
+      { q: "In which year did India get independence?", options: ["1947", "1950", "1930"], answer: "1947" },
+      { q: "Which gas do plants absorb?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide"], answer: "Carbon Dioxide" },
+      { q: "What is the national animal of India?", options: ["Tiger", "Lion", "Elephant"], answer: "Tiger" },
+      { q: "Who invented the telephone?", options: ["Edison", "Bell", "Tesla"], answer: "Bell" },
+      { q: "How many continents are there?", options: ["5", "6", "7"], answer: "7" },
+      { q: "What is H2O?", options: ["Hydrogen", "Water", "Oxygen"], answer: "Water" },
+      { q: "Who was the first President of India?", options: ["Nehru", "Gandhi", "Dr. Rajendra Prasad"], answer: "Dr. Rajendra Prasad" },
+      { q: "Which country is known as the Land of Rising Sun?", options: ["China", "Japan", "Thailand"], answer: "Japan" }
+    ];
+
+    // Shuffle and select 10 questions
+    const questions = allQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+    let current = 0;
+    let score = 0;
+    let time = 10;
+    let timer;
+
+    function loadQuestion() {
+      clearInterval(timer);
+
+      if (current >= questions.length) {
+        document.getElementById("quizBox").innerHTML = `
+          <h2>🎉 Quiz Over!</h2>
+          <p>Your Score: <strong>${score}/${questions.length}</strong></p>
+        `;
+        return;
+      }
+
+      const currentQ = questions[current];
+      document.getElementById("question").textContent = currentQ.q;
+
+      document.getElementById("options").innerHTML = currentQ.options.map(opt => 
+        `<button onclick="checkAnswer('${opt}')">${opt}</button>`
+      ).join("");
+
+      time = 10;
+      document.getElementById("time").textContent = time;
+
+      timer = setInterval(() => {
+        time--;
+        document.getElementById("time").textContent = time;
+        if (time === 0) {
+          current++;
+          loadQuestion();
+        }
+      }, 1000);
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[current].answer) {
+        score++;
+      }
+      current++;
+      loadQuestion();
+    }
+
+    window.onload = loadQuestion;
+  </script>
+</body>
+</html>
