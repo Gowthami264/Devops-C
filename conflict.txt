@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-Hi Gowthami !
-=======
-Hi Gowthami !
->>>>>>> feature-login
+Hi Gowthami from new-branch
